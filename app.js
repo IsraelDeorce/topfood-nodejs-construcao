@@ -8,6 +8,8 @@ var cookieParser = require("cookie-parser");
 var morgan = require("morgan");
 var passport = require("passport");
 var config = require("./config/config");
+var fs = require("fs");
+var parser = require('xml-js');
 
 // variables containing the routes files =======================================
 var indexRouter = require("./routes/index");
@@ -15,6 +17,7 @@ var usersRouter = require("./routes/users");
 var peopleRouter = require("./routes/peopleRouter");
 var restaurantRouter = require("./routes/restaurantRouter");
 var databaseRouter = require("./routes/databaseRouter");
+var testRoutes = require('./routes/tests');
 
 // configuration ===============================================================
 mongoose.connect(process.env.MONGODB_URI || config.mLab); // connect to database
@@ -32,14 +35,15 @@ app.use("/users", usersRouter);
 app.use("/people", peopleRouter);
 app.use("/restaurants", restaurantRouter);
 app.use("/database", databaseRouter);
+app.use("/tests", testRoutes);
 
 // catch 404 and forward to error handler ======================================
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler ===============================================================
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};
@@ -47,7 +51,7 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.statusCode || 500);
   res.setHeader("Content-Type", "application/json");
-  res.json({message: err.message});
+  res.json({ message: err.message });
 });
 
 // launch ======================================================================
