@@ -13,15 +13,14 @@ restaurantRouter.use(bodyParser.json());
  * /restaurants/everything
  * -----------------------*/
 restaurantRouter.route("/everything")
-    .get(authenticate.verifyUser, (req, res, next) => {
-
+    .get(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
         fs.readFile('./restaurants.xml', function (err, data) {
             var restaurants = parser.xml2js(data, { compact: true, spaces: 4 });
-            console.log(restaurants);
+
             res.statusCode = 200;
             res.setHeader("Content-Type", "application/json");
             res.json(restaurants);
-        }, (err) => next(err));
+        });
     });
 
 /*-------------
@@ -29,43 +28,58 @@ restaurantRouter.route("/everything")
  * ------------*/
 restaurantRouter.route("/")
     .get((req, res, next) => {
-        Restaurant.find({}, "-products")
-            .then((restaurants) => {
-                restaurants.forEach(restaurant => {
-                    restaurant.createdAt -= GMT_Brasil;
-                    restaurant.updatedAt -= GMT_Brasil;
-                });
+        fs.readFile('./restaurants.xml', function (err, data) {
+            const jsObject = parser.xml2js(data, { compact: true, spaces: 4, nativeType: true });
+            for (var i = 0; i < jsObject.database.restaurants.length; i++)
+                delete jsObject.database.restaurants[i].products;
 
-                res.statusCode = 200;
-                res.setHeader("Content-Type", "application/json");
-                res.json(restaurants);
-            }, (err) => next(err))
-            .catch((err) => next(err));
+            res.statusCode = 200;
+            res.setHeader("Content-Type", "application/json");
+            res.json(jsObject);
+        });
     })
     .post(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
-        Restaurant.create(req.body)
-            .then((restaurant) => {
-                restaurant.createdAt -= GMT_Brasil;
-                restaurant.updatedAt -= GMT_Brasil;
+        if (!req.body.name || !req.body.image || !req.body.rating) {
+            res.statusCode = 400;
+            res.setHeader("Content-Type", "application/json");
+            res.json("Please inform name, image and rating tags");
+        }
+        else {
+            fs.readFile('./restaurants.xml', function (err, data) {
+                const jsObject = parser.xml2js(data, { compact: true, spaces: 4, nativeType: true });
+                nextId = jsObject.database.currentId._text + 1;
 
-                res.statusCode = 200;
-                res.setHeader("Content-Type", "application/json");
-                res.json(restaurant);
-            }, (err) => next(err))
-            .catch((err) => next(err));
+                var restaurant = req.body;
+                restaurant._id = nextId;
+                restaurant.createdAt = new Date(Date.now() - GMT_Brasil).toISOString();
+                restaurant.updatedAt = new Date(Date.now() - GMT_Brasil).toISOString();
+
+                jsObject.database.restaurants.push(restaurant);
+                jsObject.database.currentId._text = nextId;
+
+                var xml = parser.js2xml(jsObject, { compact: true, spaces: 4 });
+
+                fs.writeFile('./restaurants.xml', xml, function (err, data) {
+                    if (err) {
+                        next(err);
+                    }
+                    else {
+                        console.log('created!');
+                        res.statusCode = 200;
+                        res.setHeader("Content-Type", "application/json");
+                        res.json(restaurant);
+                    }
+                });
+            });
+        }
     })
     .put(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
         res.statusCode = 403;
         res.end("PUT operation not supported on /restaurants");
     })
     .delete(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
-        Restaurant.deleteMany({})
-            .then((resp) => {
-                res.statusCode = 200;
-                res.setHeader("Content-Type", "application/json");
-                res.json(resp);
-            }, (err) => next(err))
-            .catch((err) => next(err));
+        res.statusCode = 403;
+        res.end("Cannot DELETE all restaurants");
     });
 
 /*---------------------------
@@ -73,58 +87,115 @@ restaurantRouter.route("/")
  * --------------------------*/
 restaurantRouter.route("/:restaurantId")
     .get((req, res, next) => {
-        Restaurant.findById(req.params.restaurantId, "-products.comments")
-            .then((restaurant) => {
-                restaurant.createdAt -= GMT_Brasil;
-                restaurant.updatedAt -= GMT_Brasil;
+        fs.readFile('./restaurants.xml', function (err, data) {
+            const jsObject = parser.xml2js(data, { compact: true, spaces: 4, nativeType: true });
+            var finded = false;
 
-                restaurant.products.forEach(product => {
-                    product.createdAt -= GMT_Brasil;
-                    product.updatedAt -= GMT_Brasil;
-                });
+            for (var i = 0; i < jsObject.database.restaurants.length; i++) {
+                if (jsObject.database.restaurants[i]._id._text == req.params.restaurantId) {
+                    finded = true;
+                    res.statusCode = 200;
+                    res.setHeader("Content-Type", "application/json");
+                    res.json(jsObject.database.restaurants[i]);
+                }
+            }
 
-                res.statusCode = 200;
+            if (!finded) {
+                res.statusCode = 404;
                 res.setHeader("Content-Type", "application/json");
-                res.json(restaurant);
-            }, (err) => next(err))
-            .catch((err) => next(err));
+                res.json("Restaurant of Id: " + req.params.restaurantId + " not found");
+            }
+        });
     })
     .post(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
         res.statusCode = 403;
         res.end("POST method not supported on /restaurants/restaurantId");
     })
     .put(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
-        Restaurant.findByIdAndUpdate(req.params.restaurantId, {
-            $set: req.body
-        }, { new: true })
-            .then((restaurant) => {
-                restaurant.createdAt -= GMT_Brasil;
-                restaurant.updatedAt -= GMT_Brasil;
+        if (!req.body.name && !req.body.image && !req.body.rating) {
+            res.statusCode = 400;
+            res.setHeader("Content-Type", "application/json");
+            res.json("Please inform at least one of the name, image and rating tags");
+        }
+        else {
+            fs.readFile('./restaurants.xml', function (err, data) {
+                const jsObject = parser.xml2js(data, { compact: true, spaces: 4, nativeType: true });
+                var finded = false;
 
-                res.statusCode = 200;
-                res.setHeader("Content-Type", "application/json");
-                res.json(restaurant);
-            }, (err) => next(err))
-            .catch((err) => next(err));
+                for (var i = 0; i < jsObject.database.restaurants.length; i++) {
+                    if (jsObject.database.restaurants[i]._id._text == req.params.restaurantId) {
+                        finded = true;
+                        if (req.body.name)
+                            jsObject.database.restaurants[i].name._text = req.body.name;
+                        if (req.body.image)
+                            jsObject.database.restaurants[i].image._text = req.body.image;
+                        if (req.body.rating)
+                            jsObject.database.restaurants[i].rating._text = req.body.rating;
+
+                        jsObject.database.restaurants[i].updatedAt._text = new Date(Date.now() - GMT_Brasil).toISOString();
+
+                        if (finded) {
+                            var xml = parser.js2xml(jsObject, { compact: true, spaces: 4 });
+
+                            fs.writeFile('./restaurants.xml', xml, function (err, data) {
+                                if (err) {
+                                    next(err);
+                                }
+                                else {
+                                    console.log('updated!');
+                                    res.statusCode = 200;
+                                    res.setHeader("Content-Type", "application/json");
+                                    res.json(jsObject.database.restaurants[i]);
+                                }
+                            });
+                            break;
+                        }
+                    }
+                }
+
+                if (!finded) {
+                    res.statusCode = 404;
+                    res.setHeader("Content-Type", "application/json");
+                    res.json("Restaurant of Id: " + req.params.restaurantId + " not found");
+                }
+            });
+        }
     })
     .delete(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
-        Restaurant.findByIdAndRemove(req.params.restaurantId)
-            .then((restaurant) => {
-                if (restaurant != null) {
-                    restaurant.createdAt -= GMT_Brasil;
-                    restaurant.updatedAt -= GMT_Brasil;
+        fs.readFile('./restaurants.xml', function (err, data) {
+            const jsObject = parser.xml2js(data, { compact: true, spaces: 4, nativeType: true });
+            var finded = false;
 
-                    res.statusCode = 200;
-                    res.setHeader("Content-Type", "application/json");
-                    res.json(restaurant);
+            for (var i = 0; i < jsObject.database.restaurants.length; i++) {
+                if (jsObject.database.restaurants[i]._id._text == req.params.restaurantId) {
+                    finded = true;
+                    var deleted = jsObject.database.restaurants.splice(i,1);
+
+                    if (finded) {
+                        var xml = parser.js2xml(jsObject, { compact: true, spaces: 4 });
+                        
+                        fs.writeFile('./restaurants.xml', xml, function (err, data) {
+                            if (err) {
+                                next(err);
+                            }
+                            else {
+                                console.log('updated!');
+                                res.statusCode = 200;
+                                res.setHeader("Content-Type", "application/json");
+                                res.json(deleted);
+                            }
+                        });
+                        break;
+                    }
                 }
-                else {
-                    err = new Error("Restaurant " + req.params.restaurantId + " not found!");
-                    err.statusCode = 404;
-                    return next(err);
-                }
-            }, (err) => next(err))
-            .catch((err) => next(err));
+            }
+
+            if (!finded) {
+                res.statusCode = 404;
+                res.setHeader("Content-Type", "application/json");
+                res.json("Restaurant of Id: " + req.params.restaurantId + " not found");
+            }
+        });
     });
 
 /*------------------------------------
@@ -179,28 +250,9 @@ restaurantRouter.route("/:restaurantId/products")
         res.statusCode = 403;
         res.end("PUT operation not supported on /restaurants/restaurantId/products");
     })
-    .delete(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
-        Restaurant.findById(req.params.restaurantId)
-            .then((restaurant) => {
-                if (restaurant != null) {
-                    for (var i = (restaurant.products.length - 1); i >= 0; i--) {
-                        restaurant.products.id(restaurant.products[i]._id).remove();
-                    }
-
-                    restaurant.save()
-                        .then((restaurant) => {
-                            res.statusCode = 200;
-                            res.setHeader("Content-Type", "application/json");
-                            res.json(restaurant.products);
-                        }, (err) => next(err));
-                }
-                else {
-                    err = new Error("Restaurant " + req.params.restaurantId + " not found!");
-                    err.statusCode = 404;
-                    return next(err);
-                }
-            }, (err) => next(err))
-            .catch((err) => next(err));
+    .delete(authenticate.verifyUser, (req, res, next) => {
+        res.statusCode = 403;
+        res.end("Cannot DELETE all products");
     });
 
 /*-----------------------------------------------

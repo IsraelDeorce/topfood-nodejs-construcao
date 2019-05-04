@@ -1,0 +1,94 @@
+<database>
+   <restaurants>
+       <_id>1</_id>
+       <name>Casa 5</name>
+       <image>Casa5.jpg</image>
+       <rating>5</rating>
+       <createdAt>2019-05-02T21:46:48.953Z</createdAt>
+       <updatedAt>2019-05-02T21:46:48.953Z</updatedAt>
+   </restaurants>
+   <restaurants>
+       <_id>2</_id>
+       <name>Canal Café</name>
+       <image>CanalCafe.jpg</image>
+       <rating>4.9</rating>
+       <createdAt>2019-05-02T21:46:48.953Z</createdAt>
+       <updatedAt>2019-05-02T21:46:48.953Z</updatedAt>
+   </restaurants>
+   <restaurants>
+       <_id>3</_id>
+       <name>Severo Garage</name>
+       <image>SeveroGarage.jpg</image>
+       <rating>4.8</rating>
+       <products>
+           <_id>4</_id>
+           <name>Porção de fritas</name>
+           <price>5.75</price>
+           <type>Entrada</type>
+           <image>PorcaoDeFritas.jpg</image>
+           <rating>4.7</rating>
+           <comments>
+               <_id>5</_id>
+               <author>Israel Júnior</author>
+               <text>Essas fritas são D+</text>
+               <createdAt>2019-05-02T21:46:48.953Z</createdAt>
+               <updatedAt>2019-05-02T21:46:48.953Z</updatedAt>
+           </comments>
+           <createdAt>2019-05-02T21:46:48.953Z</createdAt>
+           <updatedAt>2019-05-02T21:46:48.953Z</updatedAt>
+       </products>
+       <products>
+           <_id>6</_id>
+           <name>Fuca</name>
+           <price>23</price>
+           <type>Burguer</type>
+           <image>Fuca.jpg</image>
+           <rating>4.9</rating>
+           <createdAt>2019-05-02T21:46:48.953Z</createdAt>
+           <updatedAt>2019-05-02T21:46:48.953Z</updatedAt>
+       </products>
+       <products>
+           <_id>7</_id>
+           <name>Chevettera</name>
+           <price>25.5</price>
+           <type>Burguer</type>
+           <image>Chevettera.jpg</image>
+           <rating>4.4</rating>
+           <createdAt>2019-05-02T21:46:48.953Z</createdAt>
+           <updatedAt>2019-05-02T21:46:48.953Z</updatedAt>
+       </products>
+       <products>
+           <_id>8</_id>
+           <name>Opalão</name>
+           <price>29</price>
+           <type>Burguer</type>
+           <image>Opalao.jpg</image>
+           <rating>4.7</rating>
+           <createdAt>2019-05-02T21:46:48.953Z</createdAt>
+           <updatedAt>2019-05-02T21:46:48.953Z</updatedAt>
+       </products>
+       <products>
+           <_id>9</_id>
+           <name>Dojão</name>
+           <price>29</price>
+           <type>Burguer</type>
+           <image>Dojao.jpg</image>
+           <rating>4.4</rating>
+           <createdAt>2019-05-02T21:46:48.953Z</createdAt>
+           <updatedAt>2019-05-02T21:46:48.953Z</updatedAt>
+       </products>
+       <products>
+           <_id>10</_id>
+           <name>Bike Veggie</name>
+           <price>31</price>
+           <type>Burguer</type>
+           <image>BikeVeggie.jpg</image>
+           <rating>5</rating>
+           <createdAt>2019-05-02T21:46:48.953Z</createdAt>
+           <updatedAt>2019-05-02T21:46:48.953Z</updatedAt>
+       </products>
+       <createdAt>2019-05-02T21:46:48.953Z</createdAt>
+       <updatedAt>2019-05-02T21:46:48.953Z</updatedAt>
+   </restaurants>
+   <currentId>10</currentId>
+</database>

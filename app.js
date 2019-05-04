@@ -8,8 +8,6 @@ var cookieParser = require("cookie-parser");
 var morgan = require("morgan");
 var passport = require("passport");
 var config = require("./config/config");
-var fs = require("fs");
-var parser = require('xml-js');
 
 // variables containing the routes files =======================================
 var indexRouter = require("./routes/index");
@@ -36,11 +34,6 @@ app.use("/people", peopleRouter);
 app.use("/restaurants", restaurantRouter);
 app.use("/database", databaseRouter);
 app.use("/tests", testRoutes);
-
-// catch 404 and forward to error handler ======================================
-app.use(function (req, res, next) {
-  next(createError(404));
-});
 
 // error handler ===============================================================
 app.use(function (err, req, res, next) {
