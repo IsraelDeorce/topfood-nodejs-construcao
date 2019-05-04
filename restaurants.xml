@@ -79,8 +79,18 @@
             <createdAt>2019-05-02T21:46:48.953Z</createdAt>
             <updatedAt>2019-05-02T21:46:48.953Z</updatedAt>
         </products>
+        <products>
+            <_id>11</_id>
+            <name>Porção de fritas</name>
+            <price>5.75</price>
+            <type>Entrada</type>
+            <image>PorcaoDeFritas.jpg</image>
+            <rating>4.7</rating>
+            <createdAt>2019-05-03T22:15:14.511Z</createdAt>
+            <updatedAt>2019-05-03T22:15:14.511Z</updatedAt>
+        </products>
         <createdAt>2019-05-02T21:46:48.953Z</createdAt>
         <updatedAt>2019-05-02T21:46:48.953Z</updatedAt>
     </restaurants>
-    <currentId>10</currentId>
+    <currentId>11</currentId>
 </database>
