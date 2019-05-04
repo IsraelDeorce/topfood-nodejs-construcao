@@ -15,7 +15,6 @@ var usersRouter = require("./routes/users");
 var peopleRouter = require("./routes/peopleRouter");
 var restaurantRouter = require("./routes/restaurantRouter");
 var databaseRouter = require("./routes/databaseRouter");
-var testRoutes = require('./routes/tests');
 
 // configuration ===============================================================
 mongoose.connect(process.env.MONGODB_URI || config.mLab); // connect to database
@@ -33,7 +32,6 @@ app.use("/users", usersRouter);
 app.use("/people", peopleRouter);
 app.use("/restaurants", restaurantRouter);
 app.use("/database", databaseRouter);
-app.use("/tests", testRoutes);
 
 // error handler ===============================================================
 app.use(function (err, req, res, next) {
