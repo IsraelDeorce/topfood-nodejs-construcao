@@ -3,7 +3,7 @@ const bodyParser = require("body-parser");
 const authenticate = require("../config/authenticate");
 const Restaurant = require("../models/restaurant");
 const fs = require("fs");
-const parser = require('xml-js');
+const parser = require("xml-js");
 const GMT_Brasil = 3 * 60 * 60 * 1000; //GMT-3 Brasil
 
 const restaurantRouter = express.Router();
@@ -14,7 +14,7 @@ restaurantRouter.use(bodyParser.json());
  * -----------------------*/
 restaurantRouter.route("/everything")
     .get(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
-        fs.readFile('./restaurants.xml', function (err, data) {
+        fs.readFile("./restaurants.xml", function (err, data) {
             var restaurants = parser.xml2js(data, { compact: true, spaces: 4 });
 
             res.statusCode = 200;
@@ -28,7 +28,7 @@ restaurantRouter.route("/everything")
  * ------------*/
 restaurantRouter.route("/")
     .get((req, res, next) => {
-        fs.readFile('./restaurants.xml', function (err, data) {
+        fs.readFile("./restaurants.xml", function (err, data) {
             const jsObject = parser.xml2js(data, { compact: true, spaces: 4, nativeType: true });
             for (var i = 0; i < jsObject.database.restaurants.length; i++)
                 delete jsObject.database.restaurants[i].products;
@@ -45,7 +45,7 @@ restaurantRouter.route("/")
             res.json("Please inform name, image and rating tags");
         }
         else {
-            fs.readFile('./restaurants.xml', function (err, data) {
+            fs.readFile("./restaurants.xml", function (err, data) {
                 const jsObject = parser.xml2js(data, { compact: true, spaces: 4, nativeType: true });
                 var nextId = jsObject.database.currentId._text + 1;
 
@@ -59,12 +59,12 @@ restaurantRouter.route("/")
 
                 var xml = parser.js2xml(jsObject, { compact: true, spaces: 4 });
 
-                fs.writeFile('./restaurants.xml', xml, function (err, data) {
+                fs.writeFile("./restaurants.xml", xml, function (err, data) {
                     if (err) {
                         next(err);
                     }
                     else {
-                        console.log('created!');
+                        console.log("Restaurant " + restaurant._id + " created!");
                         res.statusCode = 200;
                         res.setHeader("Content-Type", "application/json");
                         res.json(restaurant);
@@ -87,20 +87,20 @@ restaurantRouter.route("/")
  * --------------------------*/
 restaurantRouter.route("/:restaurantId")
     .get((req, res, next) => {
-        fs.readFile('./restaurants.xml', function (err, data) {
+        fs.readFile("./restaurants.xml", function (err, data) {
             const jsObject = parser.xml2js(data, { compact: true, spaces: 4, nativeType: true });
-            var finded = false;
+            var found = false;
 
             for (var i = 0; i < jsObject.database.restaurants.length; i++) {
                 if (jsObject.database.restaurants[i]._id._text == req.params.restaurantId) {
-                    finded = true;
+                    found = true;
                     res.statusCode = 200;
                     res.setHeader("Content-Type", "application/json");
                     res.json(jsObject.database.restaurants[i]);
                 }
             }
 
-            if (!finded) {
+            if (!found) {
                 res.statusCode = 404;
                 res.setHeader("Content-Type", "application/json");
                 res.json("Restaurant of Id: " + req.params.restaurantId + " not found");
@@ -118,13 +118,13 @@ restaurantRouter.route("/:restaurantId")
             res.json("Please inform at least one of the name, image and rating tags");
         }
         else {
-            fs.readFile('./restaurants.xml', function (err, data) {
+            fs.readFile("./restaurants.xml", function (err, data) {
                 const jsObject = parser.xml2js(data, { compact: true, spaces: 4, nativeType: true });
-                var finded = false;
+                var found = false;
 
                 for (var i = 0; i < jsObject.database.restaurants.length; i++) {
                     if (jsObject.database.restaurants[i]._id._text == req.params.restaurantId) {
-                        finded = true;
+                        found = true;
                         if (req.body.name)
                             jsObject.database.restaurants[i].name._text = req.body.name;
                         if (req.body.image)
@@ -134,15 +134,15 @@ restaurantRouter.route("/:restaurantId")
 
                         jsObject.database.restaurants[i].updatedAt._text = new Date(Date.now() - GMT_Brasil).toISOString();
 
-                        if (finded) {
+                        if (found) {
                             var xml = parser.js2xml(jsObject, { compact: true, spaces: 4 });
 
-                            fs.writeFile('./restaurants.xml', xml, function (err, data) {
+                            fs.writeFile("./restaurants.xml", xml, function (err, data) {
                                 if (err) {
                                     next(err);
                                 }
                                 else {
-                                    console.log('updated!');
+                                    console.log("Restaurant " + req.params.restaurantId + " updated!");
                                     res.statusCode = 200;
                                     res.setHeader("Content-Type", "application/json");
                                     res.json(jsObject.database.restaurants[i]);
@@ -153,7 +153,7 @@ restaurantRouter.route("/:restaurantId")
                     }
                 }
 
-                if (!finded) {
+                if (!found) {
                     res.statusCode = 404;
                     res.setHeader("Content-Type", "application/json");
                     res.json("Restaurant of Id: " + req.params.restaurantId + " not found");
@@ -162,27 +162,27 @@ restaurantRouter.route("/:restaurantId")
         }
     })
     .delete(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
-        fs.readFile('./restaurants.xml', function (err, data) {
+        fs.readFile("./restaurants.xml", function (err, data) {
             const jsObject = parser.xml2js(data, { compact: true, spaces: 4, nativeType: true });
-            var finded = false;
+            var found = false;
 
             for (var i = 0; i < jsObject.database.restaurants.length; i++) {
                 if (jsObject.database.restaurants[i]._id._text == req.params.restaurantId) {
-                    finded = true;
-                    var deleted = jsObject.database.restaurants.splice(i, 1);
+                    found = true;
+                    var restaurantDeleted = jsObject.database.restaurants.splice(i, 1);
 
-                    if (finded) {
+                    if (found) {
                         var xml = parser.js2xml(jsObject, { compact: true, spaces: 4 });
 
-                        fs.writeFile('./restaurants.xml', xml, function (err, data) {
+                        fs.writeFile("./restaurants.xml", xml, function (err, data) {
                             if (err) {
                                 next(err);
                             }
                             else {
-                                console.log('updated!');
+                                console.log("Restaurant " + req.params.restaurantId + " deleted!");
                                 res.statusCode = 200;
                                 res.setHeader("Content-Type", "application/json");
-                                res.json(deleted);
+                                res.json(restaurantDeleted);
                             }
                         });
                         break;
@@ -190,7 +190,7 @@ restaurantRouter.route("/:restaurantId")
                 }
             }
 
-            if (!finded) {
+            if (!found) {
                 res.statusCode = 404;
                 res.setHeader("Content-Type", "application/json");
                 res.json("Restaurant of Id: " + req.params.restaurantId + " not found");
@@ -203,40 +203,40 @@ restaurantRouter.route("/:restaurantId")
  * -----------------------------------*/
 restaurantRouter.route("/:restaurantId/products")
     .get((req, res, next) => {
-        fs.readFile('./restaurants.xml', function (err, data) {
+        fs.readFile("./restaurants.xml", function (err, data) {
             const jsObject = parser.xml2js(data, { compact: true, spaces: 4, nativeType: true });
-            var finded = false;
+            var found = false;
 
             for (var i = 0; i < jsObject.database.restaurants.length; i++) {
                 if (jsObject.database.restaurants[i]._id._text == req.params.restaurantId) {
-                    finded = true;
+                    found = true;
                     res.statusCode = 200;
                     res.setHeader("Content-Type", "application/json");
                     res.json(jsObject.database.restaurants[i].products);
                 }
             }
 
-            if (!finded) {
+            if (!found) {
                 res.statusCode = 404;
                 res.setHeader("Content-Type", "application/json");
                 res.json("Restaurant of Id: " + req.params.restaurantId + " not found");
             }
         });
     })
-    .post(authenticate.verifyUser, (req, res, next) => {
+    .post(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
         if (!req.body.name || !req.body.price || !req.body.type || !req.body.image || !req.body.rating) {
             res.statusCode = 400;
             res.setHeader("Content-Type", "application/json");
             res.json("Please inform name, price, type, image and rating tags");
         }
         else {
-            fs.readFile('./restaurants.xml', function (err, data) {
+            fs.readFile("./restaurants.xml", function (err, data) {
                 const jsObject = parser.xml2js(data, { compact: true, spaces: 4, nativeType: true });
-                var finded = false;
+                var found = false;
 
                 for (var i = 0; i < jsObject.database.restaurants.length; i++) {
                     if (jsObject.database.restaurants[i]._id._text == req.params.restaurantId) {
-                        finded = true;
+                        found = true;
 
                         var nextId = jsObject.database.currentId._text + 1;
                         var product = req.body;
@@ -249,13 +249,13 @@ restaurantRouter.route("/:restaurantId/products")
 
                         var xml = parser.js2xml(jsObject, { compact: true, spaces: 4 });
 
-                        if (finded) {
-                            fs.writeFile('./restaurants.xml', xml, function (err, data) {
+                        if (found) {
+                            fs.writeFile("./restaurants.xml", xml, function (err, data) {
                                 if (err) {
                                     next(err);
                                 }
                                 else {
-                                    console.log('created!');
+                                    console.log("Product " + product._id + " created!");
                                     res.statusCode = 200;
                                     res.setHeader("Content-Type", "application/json");
                                     res.json(product);
@@ -265,7 +265,7 @@ restaurantRouter.route("/:restaurantId/products")
                     }
                 }
 
-                if (!finded) {
+                if (!found) {
                     res.statusCode = 404;
                     res.setHeader("Content-Type", "application/json");
                     res.json("Restaurant of Id: " + req.params.restaurantId + " not found");
@@ -273,11 +273,11 @@ restaurantRouter.route("/:restaurantId/products")
             });
         }
     })
-    .put(authenticate.verifyUser, (req, res, next) => {
+    .put(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
         res.statusCode = 403;
         res.end("PUT operation not supported on /restaurants/restaurantId/products");
     })
-    .delete(authenticate.verifyUser, (req, res, next) => {
+    .delete(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
         res.statusCode = 403;
         res.end("Cannot DELETE all products");
     });
@@ -287,94 +287,155 @@ restaurantRouter.route("/:restaurantId/products")
  * ----------------------------------------------*/
 restaurantRouter.route("/:restaurantId/products/:productId")
     .get((req, res, next) => {
-        Restaurant.findById(req.params.restaurantId)
-            .then((restaurant) => {
-                if (restaurant != null && restaurant.products.id(req.params.productId) != null) {
-                    restaurant.products.id(req.params.productId).createdAt -= GMT_Brasil;
-                    restaurant.products.id(req.params.productId).updatedAt -= GMT_Brasil;
+        fs.readFile("./restaurants.xml", function (err, data) {
+            const jsObject = parser.xml2js(data, { compact: true, spaces: 4, nativeType: true });
+            var restaurantFound = false;
+            var productFound = false;
 
-                    res.statusCode = 200;
-                    res.setHeader("Content-Type", "application/json");
-                    res.json(restaurant.products.id(req.params.productId));
+            for (var i = 0; i < jsObject.database.restaurants.length; i++) {
+                if (jsObject.database.restaurants[i]._id._text == req.params.restaurantId) {
+                    restaurantFound = true;
+
+                    for (var j = 0; j < jsObject.database.restaurants[i].products.length; j++) {
+                        if (jsObject.database.restaurants[i].products[j]._id._text == req.params.productId) {
+                            productFound = true;
+
+                            res.statusCode = 200;
+                            res.setHeader("Content-Type", "application/json");
+                            res.json(jsObject.database.restaurants[i].products[j]);
+                            break;
+                        }
+                    }
+                    break;
                 }
-                else if (restaurant == null) {
-                    err = new Error("Restaurant " + req.params.restaurantId + " not found!");
-                    err.statusCode = 404;
-                    return next(err);
-                }
-                else {
-                    err = new Error("Product " + req.params.productId + " not found!");
-                    err.statusCode = 404;
-                    return next(err);
-                }
-            }, (err) => next(err))
-            .catch((err) => next(err));
+            }
+
+            if (!restaurantFound) {
+                res.statusCode = 404;
+                res.setHeader("Content-Type", "application/json");
+                res.json("Restaurant of Id: " + req.params.restaurantId + " not found");
+            } else if (!productFound) {
+                res.statusCode = 404;
+                res.setHeader("Content-Type", "application/json");
+                res.json("Product of Id: " + req.params.productId + " not found for restaurant of Id: " + req.params.restaurantId);
+            }
+        });
     })
     .post(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
         res.statusCode = 403;
         res.end("POST method not supported on /restaurants/restaurantId/products/productId");
     })
     .put(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
-        Restaurant.findById(req.params.restaurantId)
-            .then((restaurant) => {
-                if (restaurant != null && restaurant.products.id(req.params.productId) != null) {
-                    if (req.body.name != null) restaurant.products.id(req.params.productId).name = req.body.name;
-                    if (req.body.price != null) restaurant.products.id(req.params.productId).price = req.body.price;
-                    if (req.body.type != null) restaurant.products.id(req.params.productId).type = req.body.type;
-                    if (req.body.image != null) restaurant.products.id(req.params.productId).image = req.body.image;
-                    if (req.body.rating != null) restaurant.products.id(req.params.productId).rating = req.body.rating;
+        if (!req.body.name && !req.body.price && req.body.type && !req.body.image && !req.body.rating) {
+            res.statusCode = 400;
+            res.setHeader("Content-Type", "application/json");
+            res.json("Please inform at least one of the name, price, type, image and rating tags");
+        }
+        else {
+            fs.readFile("./restaurants.xml", function (err, data) {
+                const jsObject = parser.xml2js(data, { compact: true, spaces: 4, nativeType: true });
+                var restaurantFound = false;
+                var productFound = false;
 
-                    restaurant.save()
-                        .then((restaurant) => {
-                            restaurant.products.id(req.params.productId).createdAt -= GMT_Brasil;
-                            restaurant.products.id(req.params.productId).updatedAt -= GMT_Brasil;
+                for (var i = 0; i < jsObject.database.restaurants.length; i++) {
+                    if (jsObject.database.restaurants[i]._id._text == req.params.restaurantId) {
+                        restaurantFound = true;
 
-                            res.statusCode = 200;
-                            res.setHeader("Content-Type", "application/json");
-                            res.json(restaurant.products.id(req.params.productId));
-                        }, (err) => next(err));
+                        for (var j = 0; j < jsObject.database.restaurants[i].products.length; j++) {
+                            if (jsObject.database.restaurants[i].products[j]._id._text == req.params.productId) {
+                                productFound = true;
+
+                                if (req.body.name)
+                                    jsObject.database.restaurants[i].products[j].name._text = req.body.name;
+                                if (req.body.price)
+                                    jsObject.database.restaurants[i].products[j].price._text = req.body.price;
+                                if (req.body.type)
+                                    jsObject.database.restaurants[i].products[j].type._text = req.body.type;
+                                if (req.body.image)
+                                    jsObject.database.restaurants[i].products[j].image._text = req.body.image;
+                                if (req.body.rating)
+                                    jsObject.database.restaurants[i].products[j].rating._text = req.body.rating;
+
+                                jsObject.database.restaurants[i].products[j].updatedAt._text = new Date(Date.now() - GMT_Brasil).toISOString();
+
+                                var xml = parser.js2xml(jsObject, { compact: true, spaces: 4 });
+
+                                fs.writeFile("./restaurants.xml", xml, function (err, data) {
+                                    if (err) {
+                                        next(err);
+                                    }
+                                    else {
+                                        console.log("Product " + req.params.productId + " updated!");
+                                        res.statusCode = 200;
+                                        res.setHeader("Content-Type", "application/json");
+                                        res.json(jsObject.database.restaurants[i].products[j]);
+                                    }
+                                });
+                                break;
+                            }
+                        }
+                        break;
+                    }
                 }
-                else if (restaurant == null) {
-                    err = new Error("Restaurant " + req.params.restaurantId + " not found!");
-                    err.statusCode = 404;
-                    return next(err);
+
+                if (!restaurantFound) {
+                    res.statusCode = 404;
+                    res.setHeader("Content-Type", "application/json");
+                    res.json("Restaurant of Id: " + req.params.restaurantId + " not found");
+                } else if (!productFound) {
+                    res.statusCode = 404;
+                    res.setHeader("Content-Type", "application/json");
+                    res.json("Product of Id: " + req.params.productId + " not found for restaurant of Id: " + req.params.restaurantId);
                 }
-                else {
-                    err = new Error("Product " + req.params.productId + " not found!");
-                    err.statusCode = 404;
-                    return next(err);
-                }
-            }, (err) => next(err))
-            .catch((err) => next(err));
+            });
+        }
     })
     .delete(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
-        Restaurant.findById(req.params.restaurantId)
-            .then((restaurant) => {
-                if (restaurant != null && restaurant.products.id(req.params.productId) != null) {
-                    var productRemoved = restaurant.products.id(req.params.productId).remove();
+        fs.readFile("./restaurants.xml", function (err, data) {
+            const jsObject = parser.xml2js(data, { compact: true, spaces: 4, nativeType: true });
+            var restaurantFound = false;
+            var productFound = false;
 
-                    restaurant.save()
-                        .then((restaurant) => {
-                            productRemoved.createdAt -= GMT_Brasil;
-                            productRemoved.updatedAt -= GMT_Brasil;
+            for (var i = 0; i < jsObject.database.restaurants.length; i++) {
+                if (jsObject.database.restaurants[i]._id._text == req.params.restaurantId) {
+                    restaurantFound = true;
 
-                            res.statusCode = 200;
-                            res.setHeader("Content-Type", "application/json");
-                            res.json(productRemoved);
-                        }, (err) => next(err));
+                    for (var j = 0; j < jsObject.database.restaurants[i].products.length; j++) {
+                        if (jsObject.database.restaurants[i].products[j]._id._text == req.params.productId) {
+                            productFound = true;
+
+                            var productDeleted = jsObject.database.restaurants[i].products.splice(j, 1);
+
+                            var xml = parser.js2xml(jsObject, { compact: true, spaces: 4 });
+
+                            fs.writeFile("./restaurants.xml", xml, function (err, data) {
+                                if (err) {
+                                    next(err);
+                                }
+                                else {
+                                    console.log("Product " + req.params.productId + " of restaurant " + req.params.restaurantId + " deleted!");
+                                    res.statusCode = 200;
+                                    res.setHeader("Content-Type", "application/json");
+                                    res.json(productDeleted);
+                                }
+                            });
+                            break;
+                        }
+                    }
+                    break;
                 }
-                else if (restaurant == null) {
-                    err = new Error("Restaurant " + req.params.restaurantId + " not found!");
-                    err.statusCode = 404;
-                    return next(err);
-                }
-                else {
-                    err = new Error("Product " + req.params.productId + " not found!");
-                    err.statusCode = 404;
-                    return next(err);
-                }
-            }, (err) => next(err))
-            .catch((err) => next(err));
+            }
+
+            if (!restaurantFound) {
+                res.statusCode = 404;
+                res.setHeader("Content-Type", "application/json");
+                res.json("Restaurant of Id: " + req.params.restaurantId + " not found");
+            } else if (!productFound) {
+                res.statusCode = 404;
+                res.setHeader("Content-Type", "application/json");
+                res.json("Product of Id: " + req.params.productId + " not found for restaurant of Id: " + req.params.restaurantId);
+            }
+        });
     });
 
 /*--------------------------------------------------------
