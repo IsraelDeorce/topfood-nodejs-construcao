@@ -15,11 +15,11 @@ restaurantRouter.use(bodyParser.json());
 restaurantRouter.route("/everything")
     .get(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
         fs.readFile("./restaurants.xml", function (err, data) {
-            var restaurants = parser.xml2js(data, { compact: true, spaces: 4 });
+            const jsObject = parser.xml2js(data, { compact: true, spaces: 4 });
 
             res.statusCode = 200;
             res.setHeader("Content-Type", "application/json");
-            res.json(restaurants);
+            res.json(jsObject);
         });
     });
 
@@ -35,7 +35,7 @@ restaurantRouter.route("/")
 
             res.statusCode = 200;
             res.setHeader("Content-Type", "application/json");
-            res.json(jsObject);
+            res.json(jsObject.database.restaurants);
         });
     })
     .post(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
