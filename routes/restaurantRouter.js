@@ -12,7 +12,7 @@ restaurantRouter.use(bodyParser.json());
  * /restaurants/everything
  * -----------------------*/
 restaurantRouter.route("/everything")
-.get(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+.get((req, res, next) => {
     Restaurant.find({})
     .populate("products.comments.author", "username")
     .then((restaurants) => {
@@ -56,7 +56,7 @@ restaurantRouter.route("/")
     }, (err) => next(err))
     .catch((err) => next(err));
 })
-.post(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+.post((req, res, next) => {
     Restaurant.create(req.body)
     .then((restaurant) => {
         restaurant.createdAt -= GMT_Brasil;
@@ -68,11 +68,11 @@ restaurantRouter.route("/")
     }, (err) => next(err))
     .catch((err) => next(err));
 })
-.put(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+.put((req, res, next) => {
     res.statusCode = 403;
     res.end("PUT operation not supported on /restaurants");
 })
-.delete(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+.delete((req, res, next) => {
     Restaurant.deleteMany({})
     .then((resp) => {
         res.statusCode = 200;
@@ -103,11 +103,11 @@ restaurantRouter.route("/:restaurantId")
     }, (err) => next(err))
     .catch((err) => next(err));
 })
-.post(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+.post((req, res, next) => {
     res.statusCode = 403;
     res.end("POST method not supported on /restaurants/restaurantId");
 })
-.put(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+.put((req, res, next) => {
     Restaurant.findByIdAndUpdate(req.params.restaurantId, {
         $set: req.body
     }, { new: true })
@@ -121,7 +121,7 @@ restaurantRouter.route("/:restaurantId")
     }, (err) => next(err))
     .catch((err) => next(err));
 })
-.delete(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+.delete((req, res, next) => {
     Restaurant.findByIdAndRemove(req.params.restaurantId)
     .then((restaurant) => {
         if(restaurant != null) {
@@ -166,7 +166,7 @@ restaurantRouter.route("/:restaurantId/products")
     }, (err) => next(err))
     .catch((err) => next(err));
 })
-.post(authenticate.verifyUser, (req, res, next) => {
+.post((req, res, next) => {
     Restaurant.findById(req.params.restaurantId)
     .then((restaurant) => {
         if(restaurant != null) {
@@ -189,11 +189,11 @@ restaurantRouter.route("/:restaurantId/products")
     }, (err) => next(err))
     .catch((err) => next(err));
 })
-.put(authenticate.verifyUser, (req, res, next) => {
+.put((req, res, next) => {
     res.statusCode = 403;
     res.end("PUT operation not supported on /restaurants/restaurantId/products");
 })
-.delete(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+.delete((req, res, next) => {
     Restaurant.findById(req.params.restaurantId)
     .then((restaurant) => {
         if(restaurant != null) {
@@ -245,11 +245,11 @@ restaurantRouter.route("/:restaurantId/products/:productId")
     }, (err) => next(err))
     .catch((err) => next(err));
 })
-.post(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+.post((req, res, next) => {
     res.statusCode = 403;
     res.end("POST method not supported on /restaurants/restaurantId/products/productId");
 })
-.put(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+.put((req, res, next) => {
     Restaurant.findById(req.params.restaurantId)
     .then((restaurant) => {
         if(restaurant != null && restaurant.products.id(req.params.productId) != null) {
@@ -282,7 +282,7 @@ restaurantRouter.route("/:restaurantId/products/:productId")
     }, (err) => next(err))
     .catch((err) => next(err));
 })
-.delete(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+.delete((req, res, next) => {
     Restaurant.findById(req.params.restaurantId)
     .then((restaurant) => {
         if(restaurant != null && restaurant.products.id(req.params.productId) != null) {
@@ -343,7 +343,7 @@ restaurantRouter.route("/:restaurantId/products/:productId/comments")
     }, (err) => next(err))
     .catch((err) => next(err));
 })
-.post(authenticate.verifyUser, (req, res, next) => {
+.post((req, res, next) => {
     Restaurant.findById(req.params.restaurantId)
     .then((restaurant) => {
         if(restaurant != null && restaurant.products.id(req.params.productId) != null) {
@@ -382,11 +382,11 @@ restaurantRouter.route("/:restaurantId/products/:productId/comments")
     }, (err) => next(err))
     .catch((err) => next(err));
 })
-.put(authenticate.verifyUser, (req, res, next) => {
+.put((req, res, next) => {
     res.statusCode = 403;
     res.end("PUT operation not supported on /restaurants/restaurantId/products/productId/comments");
 })
-.delete(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+.delete((req, res, next) => {
     Restaurant.findById(req.params.restaurantId)
     .then((restaurant) => {
         if(restaurant != null && restaurant.products.id(req.params.productId) != null) {
@@ -453,11 +453,11 @@ restaurantRouter.route("/:restaurantId/products/:productId/comments/:commentId")
     }, (err) => next(err))
     .catch((err) => next(err));
 })
-.post(authenticate.verifyUser, (req, res, next) => {
+.post((req, res, next) => {
     res.statusCode = 403;
     res.end("POST method not supported on /restaurants/restaurantId/products/productId/comments/commentId");
 })
-.put(authenticate.verifyUser, (req, res, next) => {
+.put((req, res, next) => {
     Restaurant.findById(req.params.restaurantId)
     .then((restaurant) => {
         if(restaurant != null && restaurant.products.id(req.params.productId) != null 
@@ -517,7 +517,7 @@ restaurantRouter.route("/:restaurantId/products/:productId/comments/:commentId")
     }, (err) => next(err))
     .catch((err) => next(err));
 })
-.delete(authenticate.verifyUser, (req, res, next) => {
+.delete((req, res, next) => {
     Restaurant.findById(req.params.restaurantId)
     .then((restaurant) => {
         if(restaurant != null && restaurant.products.id(req.params.productId) != null 
