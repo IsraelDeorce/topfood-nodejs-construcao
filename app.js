@@ -6,10 +6,12 @@ var port = process.env.PORT || 3003;
 var mongoose = require("mongoose");
 var cookieParser = require("cookie-parser");
 var morgan = require("morgan");
+var passport = require("passport");
 var config = require("./config/config");
 
 // variables containing the routes files =======================================
 var indexRouter = require("./routes/index");
+var usersRouter = require("./routes/users");
 var restaurantRouter = require("./routes/restaurantRouter");
 var databaseRouter = require("./routes/databaseRouter");
 
@@ -21,9 +23,11 @@ app.use(morgan("dev")); // log every request to the console
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(passport.initialize());
 
 // routes ======================================================================
 app.use("/", indexRouter);
+app.use("/users", usersRouter);
 app.use("/restaurants", restaurantRouter);
 app.use("/database", databaseRouter);
 
