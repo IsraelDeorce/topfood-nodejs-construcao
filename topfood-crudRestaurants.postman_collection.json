@@ -6,14 +6,29 @@
 	},
 	"item": [
 		{
-			"name": "localhost:3003/restaurants/everything",
+			"name": "POST populate database",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:3003/database/populate_default",
+					"host": [
+						"localhost"
+					],
+					"port": "3003",
+					"path": [
+						"database",
+						"populate_default"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET everything",
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
 				"url": {
 					"raw": "localhost:3003/restaurants/everything",
 					"host": [
@@ -29,14 +44,10 @@
 			"response": []
 		},
 		{
-			"name": "localhost:3003/restaurants/",
+			"name": "DEL All Restaurants",
 			"request": {
-				"method": "GET",
+				"method": "DELETE",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
 				"url": {
 					"raw": "localhost:3003/restaurants/",
 					"host": [
@@ -52,30 +63,45 @@
 			"response": []
 		},
 		{
-			"name": "localhost:3003/restaurants/5b3c35d3ab468a3718c72fce",
+			"name": "GET All Restaurants",
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
 				"url": {
-					"raw": "localhost:3003/restaurants/5b3c35d3ab468a3718c72fce",
+					"raw": "localhost:3003/restaurants/",
 					"host": [
 						"localhost"
 					],
 					"port": "3003",
 					"path": [
 						"restaurants",
-						"5b3c35d3ab468a3718c72fce"
+						""
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "localhost:3003/restaurants/5b3c35d3ab468a3718c72fce",
+			"name": "GET Restaurant",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3003/restaurants/5d09965ab51fbb32cc07d94e",
+					"host": [
+						"localhost"
+					],
+					"port": "3003",
+					"path": [
+						"restaurants",
+						"5d09965ab51fbb32cc07d94e"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT Restaurant",
 			"request": {
 				"method": "PUT",
 				"header": [
@@ -88,24 +114,24 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"name\" : \"Restaurante Teste\"\n}"
+					"raw": "{\n\t\"rating\": 4.7\n}"
 				},
 				"url": {
-					"raw": "localhost:3003/restaurants/5cd725986fab1a20647845b8",
+					"raw": "localhost:3003/restaurants/5d09965ab51fbb32cc07d94e",
 					"host": [
 						"localhost"
 					],
 					"port": "3003",
 					"path": [
 						"restaurants",
-						"5cd725986fab1a20647845b8"
+						"5d09965ab51fbb32cc07d94e"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "localhost:3003/restaurants/",
+			"name": "POST Restaurant",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -135,14 +161,10 @@
 			"response": []
 		},
 		{
-			"name": "localhost:3003/restaurants/5cd725516fab1a20647845b7",
+			"name": "DEL Restaurant",
 			"request": {
 				"method": "DELETE",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
 				"url": {
 					"raw": "localhost:3003/restaurants/5cccc4310fe25a1bc8c01c4c",
 					"host": [
@@ -158,7 +180,28 @@
 			"response": []
 		},
 		{
-			"name": "localhost:3003/restaurants/5cd725986fab1a20647845b8/products",
+			"name": "GET Restaurant Product",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3003/restaurants/5d09965ab51fbb32cc07d94e/products/5d09965ab51fbb32cc07d94f",
+					"host": [
+						"localhost"
+					],
+					"port": "3003",
+					"path": [
+						"restaurants",
+						"5d09965ab51fbb32cc07d94e",
+						"products",
+						"5d09965ab51fbb32cc07d94f"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST Restaurant Products",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -189,7 +232,7 @@
 			"response": []
 		},
 		{
-			"name": "localhost:3003/restaurants/5cd725986fab1a20647845b8/products/5cd7266a6fab1a20647845b9/comments",
+			"name": "POST Product Comment",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -222,7 +265,7 @@
 			"response": []
 		},
 		{
-			"name": "localhost:3003/restaurants/5b3c35d3ab468a3718c72fd0/products/5b3c35d3ab468a3718c72fd6/comments/5b3c4467c127a100146b741f",
+			"name": "PUT Product Comment",
 			"request": {
 				"method": "PUT",
 				"header": [

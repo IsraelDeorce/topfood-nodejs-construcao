@@ -1,6 +1,5 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const authenticate = require("../config/authenticate");
 const Restaurant = require("../models/restaurant");
 
 const databaseRouter = express.Router();
@@ -60,7 +59,15 @@ var restaurants = [{
         price: 31.00,
         type: "Burguer",
         image: "BikeVeggie.jpg",
-        rating: 5.0
+        rating: 5.0,
+        comments: [{
+          author: "Israel Deorce",
+          text: "É bão, mas prefiro os com carne!"
+        },
+        {
+          author: "Gabriel Paul",
+          text: "É bem bão, melhor que os com carne!"
+        }]
       }
     ]
   }  
@@ -70,7 +77,7 @@ var restaurants = [{
  * /database/populate_default
  * ------------------------------*/
 databaseRouter.route("/populate_default")
-.post(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+.post( (req, res, next) => {
     Restaurant.create(restaurants, function (err) {
         if (err) {
             return next(err);
