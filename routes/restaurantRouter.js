@@ -527,7 +527,7 @@ restaurantRouter.route("/:restaurantId/products/:productId/comments/:commentId")
                             var response = {
                                 _id: commentRemoved._id
                                 , text: commentRemoved.text
-                                , author: comment.author
+                                , author: commentRemoved.author
                                 , createdAt: commentRemoved.createdAt
                                 , updatedAt: commentRemoved.updatedAt
                             }
