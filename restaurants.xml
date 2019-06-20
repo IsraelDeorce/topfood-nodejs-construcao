@@ -1,0 +1,109 @@
+<database>
+    <restaurants>
+        <_id>1</_id>
+        <name>Casa 5</name>
+        <image>Casa5.jpg</image>
+        <rating>5</rating>
+        <createdAt>2019-06-20T12:27:25.601Z</createdAt>
+        <updatedAt>2019-06-20T12:27:25.601Z</updatedAt>
+    </restaurants>
+    <restaurants>
+        <_id>2</_id>
+        <name>Canal Café</name>
+        <image>CanalCafe.jpg</image>
+        <rating>4.9</rating>
+        <createdAt>2019-06-20T12:27:25.601Z</createdAt>
+        <updatedAt>2019-06-20T12:27:25.601Z</updatedAt>
+    </restaurants>
+    <restaurants>
+        <_id>3</_id>
+        <name>Severo Garage</name>
+        <image>SeveroGarage.jpg</image>
+        <rating>4.8</rating>
+        <products>
+            <_id>4</_id>
+            <name>Porção de fritas</name>
+            <price>5.75</price>
+            <type>Entrada</type>
+            <image>PorcaoDeFritas.jpg</image>
+            <rating>4.7</rating>
+            <createdAt>2019-06-20T12:27:25.601Z</createdAt>
+            <updatedAt>2019-06-20T12:27:25.601Z</updatedAt>
+        </products>
+        <products>
+            <_id>5</_id>
+            <name>Fuca</name>
+            <price>23</price>
+            <type>Burguer</type>
+            <image>Fuca.jpg</image>
+            <rating>4.9</rating>
+            <createdAt>2019-06-20T12:27:25.601Z</createdAt>
+            <updatedAt>2019-06-20T12:27:25.601Z</updatedAt>
+        </products>
+        <products>
+            <_id>6</_id>
+            <name>Chevettera</name>
+            <price>25.5</price>
+            <type>Burguer</type>
+            <image>Chevettera.jpg</image>
+            <rating>4.4</rating>
+            <createdAt>2019-06-20T12:27:25.601Z</createdAt>
+            <updatedAt>2019-06-20T12:27:25.601Z</updatedAt>
+        </products>
+        <products>
+            <_id>7</_id>
+            <name>Opalão</name>
+            <price>29</price>
+            <type>Burguer</type>
+            <image>Opalao.jpg</image>
+            <rating>4.7</rating>
+            <createdAt>2019-06-20T12:27:25.601Z</createdAt>
+            <updatedAt>2019-06-20T12:27:25.601Z</updatedAt>
+        </products>
+        <products>
+            <_id>8</_id>
+            <name>Dojão</name>
+            <price>29</price>
+            <type>Burguer</type>
+            <image>Dojao.jpg</image>
+            <rating>4.4</rating>
+            <createdAt>2019-06-20T12:27:25.601Z</createdAt>
+            <updatedAt>2019-06-20T12:27:25.601Z</updatedAt>
+        </products>
+        <products>
+            <_id>9</_id>
+            <name>Bike Veggie</name>
+            <price>31</price>
+            <type>Burguer</type>
+            <image>BikeVeggie.jpg</image>
+            <rating>5</rating>
+            <comments>
+                <_id>10</_id>
+                <author>Israel Deorce</author>
+                <text>É bão, mas prefiro os com carne!</text>
+                <createdAt>2019-06-20T12:27:25.601Z</createdAt>
+                <updatedAt>2019-06-20T12:27:25.601Z</updatedAt>
+            </comments>
+            <comments>
+                <_id>11</_id>
+                <author>Gabriel Paul</author>
+                <text>É bem bão, melhor que os com carne!</text>
+                <createdAt>2019-06-20T12:27:25.601Z</createdAt>
+                <updatedAt>2019-06-20T12:27:25.601Z</updatedAt>
+            </comments>
+            <createdAt>2019-06-20T12:27:25.602Z</createdAt>
+            <updatedAt>2019-06-20T12:27:25.602Z</updatedAt>
+        </products>
+        <createdAt>2019-06-20T12:27:25.602Z</createdAt>
+        <updatedAt>2019-06-20T12:27:25.602Z</updatedAt>
+    </restaurants>
+    <restaurants>
+        <name>Retaurante Teste</name>
+        <image>RestauranteTeste.jpg</image>
+        <rating>3.9</rating>
+        <_id>15</_id>
+        <createdAt>2019-06-20T12:41:04.863Z</createdAt>
+        <updatedAt>2019-06-20T12:41:04.863Z</updatedAt>
+    </restaurants>
+    <currentId>15</currentId>
+</database>

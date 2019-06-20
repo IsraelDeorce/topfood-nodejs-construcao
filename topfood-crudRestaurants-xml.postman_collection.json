@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "c106dca9-41dc-4ee2-acaa-824922041a2b",
-		"name": "topfood-crudRestaurants",
+		"_postman_id": "bb453f3a-0e42-4009-9795-7c595cfe0696",
+		"name": "topfood-crudRestaurants-xml",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -44,25 +44,6 @@
 			"response": []
 		},
 		{
-			"name": "DEL All Restaurants",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "localhost:3003/restaurants/",
-					"host": [
-						"localhost"
-					],
-					"port": "3003",
-					"path": [
-						"restaurants",
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "GET All Restaurants",
 			"request": {
 				"method": "GET",
@@ -87,14 +68,44 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:3003/restaurants/5d09965ab51fbb32cc07d94e",
+					"raw": "localhost:3003/restaurants/12",
 					"host": [
 						"localhost"
 					],
 					"port": "3003",
 					"path": [
 						"restaurants",
-						"5d09965ab51fbb32cc07d94e"
+						"12"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST Restaurant",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"Retaurante Teste\",\n    \"image\": \"RestauranteTeste.jpg\",\n    \"rating\": 3.9\n}"
+				},
+				"url": {
+					"raw": "localhost:3003/restaurants/",
+					"host": [
+						"localhost"
+					],
+					"port": "3003",
+					"path": [
+						"restaurants",
+						""
 					]
 				}
 			},
@@ -117,44 +128,14 @@
 					"raw": "{\n\t\"rating\": 4.7\n}"
 				},
 				"url": {
-					"raw": "localhost:3003/restaurants/5d09965ab51fbb32cc07d94e",
+					"raw": "localhost:3003/restaurants/12",
 					"host": [
 						"localhost"
 					],
 					"port": "3003",
 					"path": [
 						"restaurants",
-						"5d09965ab51fbb32cc07d94e"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "POST Restaurant",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"name\": \"Retaurante Teste\",\n    \"image\": \"RestauranteTeste.jpg\",\n    \"rating\": 3.9\n}"
-				},
-				"url": {
-					"raw": "localhost:3003/restaurants/",
-					"host": [
-						"localhost"
-					],
-					"port": "3003",
-					"path": [
-						"restaurants",
-						""
+						"12"
 					]
 				}
 			},
@@ -166,50 +147,50 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "localhost:3003/restaurants/5cccc4310fe25a1bc8c01c4c",
+					"raw": "localhost:3003/restaurants/12",
 					"host": [
 						"localhost"
 					],
 					"port": "3003",
 					"path": [
 						"restaurants",
-						"5cccc4310fe25a1bc8c01c4c"
+						"12"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "GET Restaurant Product",
+			"name": "GET Product",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:3003/restaurants/5d09965ab51fbb32cc07d94e/products/5d09965ab51fbb32cc07d94f",
+					"raw": "localhost:3003/restaurants/12/products/13",
 					"host": [
 						"localhost"
 					],
 					"port": "3003",
 					"path": [
 						"restaurants",
-						"5d09965ab51fbb32cc07d94e",
+						"12",
 						"products",
-						"5d09965ab51fbb32cc07d94f"
+						"13"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "POST Restaurant Products",
+			"name": "POST Product",
 			"request": {
 				"method": "POST",
 				"header": [
 					{
 						"key": "Content-Type",
 						"name": "Content-Type",
-						"value": "application/json",
-						"type": "text"
+						"type": "text",
+						"value": "application/json"
 					}
 				],
 				"body": {
@@ -217,14 +198,14 @@
 					"raw": "{\r\n\t\"name\": \"Produto Teste\",\r\n    \"price\": 100.01,\r\n    \"type\": \"Prato Feito\",\r\n    \"image\": \"PF.jpg\",\r\n    \"rating\" : 5.0\r\n}"
 				},
 				"url": {
-					"raw": "localhost:3003/restaurants/5cd725986fab1a20647845b8/products",
+					"raw": "localhost:3003/restaurants/12/products",
 					"host": [
 						"localhost"
 					],
 					"port": "3003",
 					"path": [
 						"restaurants",
-						"5cd725986fab1a20647845b8",
+						"12",
 						"products"
 					]
 				}
@@ -232,40 +213,7 @@
 			"response": []
 		},
 		{
-			"name": "POST Product Comment",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"author\": \"Usuario Teste\",\n    \"text\" : \"Texto teste para o produto teste do restaurante teste\"\n}\n"
-				},
-				"url": {
-					"raw": "localhost:3003/restaurants/5cd725986fab1a20647845b8/products/5cd7266a6fab1a20647845b9/comments",
-					"host": [
-						"localhost"
-					],
-					"port": "3003",
-					"path": [
-						"restaurants",
-						"5cd725986fab1a20647845b8",
-						"products",
-						"5cd7266a6fab1a20647845b9",
-						"comments"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "PUT Product Comment",
+			"name": "PUT Product",
 			"request": {
 				"method": "PUT",
 				"header": [
@@ -278,21 +226,164 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"author\" : \"Israel Deorcito\",\n\t\"text\" : \"Bem bom o negócio\"\n}"
+					"raw": "{\n    \"rating\": 4.9\n}"
 				},
 				"url": {
-					"raw": "localhost:3003/restaurants/5b3c35d3ab468a3718c72fd0/products/5b3c35d3ab468a3718c72fd6/comments/5b3d50c10cfe0500145f7de1",
+					"raw": "localhost:3003/restaurants/12/products/13",
 					"host": [
 						"localhost"
 					],
 					"port": "3003",
 					"path": [
 						"restaurants",
-						"5b3c35d3ab468a3718c72fd0",
+						"12",
 						"products",
-						"5b3c35d3ab468a3718c72fd6",
+						"13"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DEL Product",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:3003/restaurants/12/products/13",
+					"host": [
+						"localhost"
+					],
+					"port": "3003",
+					"path": [
+						"restaurants",
+						"12",
+						"products",
+						"13"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Comment",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3003/restaurants/12/products/13/comments/14",
+					"host": [
+						"localhost"
+					],
+					"port": "3003",
+					"path": [
+						"restaurants",
+						"12",
+						"products",
+						"13",
 						"comments",
-						"5b3d50c10cfe0500145f7de1"
+						"14"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST Comment",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"author\": \"Usuário Teste\",\n    \"text\" : \"Comentário teste para o produto teste do restaurante teste\"\n}\n"
+				},
+				"url": {
+					"raw": "localhost:3003/restaurants/12/products/13/comments",
+					"host": [
+						"localhost"
+					],
+					"port": "3003",
+					"path": [
+						"restaurants",
+						"12",
+						"products",
+						"13",
+						"comments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT Comment",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"author\" : \"Usuário Teste\",\n\t\"text\" : \"Bem bom o negócio\"\n}"
+				},
+				"url": {
+					"raw": "localhost:3003/restaurants/12/products/13/comments/14",
+					"host": [
+						"localhost"
+					],
+					"port": "3003",
+					"path": [
+						"restaurants",
+						"12",
+						"products",
+						"13",
+						"comments",
+						"14"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DEL Comment",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"author\" : \"Usuário Teste\"\n}"
+				},
+				"url": {
+					"raw": "localhost:3003/restaurants/12/products/13/comments/14",
+					"host": [
+						"localhost"
+					],
+					"port": "3003",
+					"path": [
+						"restaurants",
+						"12",
+						"products",
+						"13",
+						"comments",
+						"14"
 					]
 				}
 			},
